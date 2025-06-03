@@ -167,7 +167,7 @@ const ProductDetailComp = ({prop}) => {
         <h2 className="text-2xl font-semibold">Explore Similar Products</h2>
         <div className="flex flex-nowrap gap-2 overflow-x-auto py-8 md:gap-4">
           {getSimilarProducts().map((product) => (
-            <Link to="/product" state={product} key={product.id}>
+            <Link to={`/product/${product._id}`} state={product} key={product.id}>
               <div className="card flex w-42 flex-col justify-between rounded transition hover:cursor-pointer hover:bg-white hover:shadow-xl">
                 <div className="relative h-42">
                   <img

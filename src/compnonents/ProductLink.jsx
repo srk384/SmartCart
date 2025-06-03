@@ -30,7 +30,7 @@ const ProductLink = ({ prop }) => {
 
   
   return (
-    <Link to={`/product/${product._id}`} state={product} key={product._id}>
+    <Link to={`/product/${product._id}`} state={product}>
       <div className="card group mx-auto mb-5 flex w-[300px] flex-col justify-between rounded transition hover:cursor-pointer hover:bg-white hover:shadow-xl md:w-full">
         <div className="relative h-[304px]">
           <img
