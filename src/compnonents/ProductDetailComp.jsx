@@ -1,54 +1,39 @@
 import { useState, useEffect, useRef } from "react";
-import { IoMdStar, IoMdStarHalf } from "react-icons/io";
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart, setProductList } from "../redux/slices/productDataSlice";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { productArray } from "../data/ProductArray";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/slices/productDataSlice";
 import toast, { Toaster } from "react-hot-toast";
 import CartSVG from "./SVGs/CartSVG";
 import BuySVG from "./SVGs/BuySVG";
+import { HandleRatings } from "./HandleRatings";
 
-const ProductDetailComp = ({prop}) => {
+const ProductDetailComp = () => {
+  const { cartItems, productList } = useSelector((state) => state.productData);
   const { id } = useParams();
   const location = useLocation();
-  const product = fetchProductById(id) || location.state 
   const dispatch = useDispatch();
   const imgRef = useRef();
   const [isAdded2Cart, setIsAdded2Cart] = useState(false);
+  const [productById, setProductById] = useState(false);
 
+  useEffect(() => {
+    if (id && productList.length > 0) {
+      const filtered = productList.find((item) => item._id === id);
+      setProductById(filtered);
+    } else {
+      dispatch(setProductList(productArray));
+    }
+  }, [id, productList]);
 
-
-  function fetchProductById(id){
-    let product =  productArray.find((item)=>item._id === id)
-    return product;
-  }
+  const product = productById || location.state;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [product]);
 
-  const handleRatings = (count) => {
-    if (typeof count !== "number" || isNaN(count) || count < 0 || count > 5)
-      return [];
-
-    const floorCount = Math.floor(count);
-    const hasHalf = count % 1 !== 0;
-
-    const stars = [];
-
-    for (let i = 0; i < floorCount; i++) {
-      stars.push(<IoMdStar key={`star-full-${i}`} />);
-    }
-
-    if (hasHalf) {
-      stars.push(<IoMdStarHalf key="star-half" />);
-    }
-
-    return stars;
-  };
-
-  const getSimilarProducts = (category = product.category.name) => {
-    const similarProducts = productArray.filter(
+    const getSimilarProducts = (category = product.category.name) => {
+    const similarProducts = productList.filter(
       (item) => item.category.name === category,
     );
     return similarProducts;
@@ -113,7 +98,7 @@ const ProductDetailComp = ({prop}) => {
         <div className="w-full lg:w-1/2">
           <h1 className="mb-2 text-3xl font-bold">{product.title}</h1>
           <div className="mb-4 flex items-center text-amber-600">
-            {handleRatings(product.ratings)}
+            <HandleRatings stars={product.ratings} />
             <span className="pl-1 text-sm text-gray-500">(76 reviews)</span>
           </div>
           <p className="mb-4 text-lg text-gray-700">{product.description}</p>
@@ -121,28 +106,38 @@ const ProductDetailComp = ({prop}) => {
             ₹{product.price}
           </p>
 
-            {/* --size selector-- */}
+          {/* --size selector-- */}
 
-            <div className="size text-sm mb-8">
-              <span className="border p-1 m-1 px-2 border-neutral-300 active:bg-red-300">S</span>
-              <span className="border p-1 m-1 px-2 border-neutral-300 active:bg-red-300">M</span>
-              <span className="border p-1 m-1 px-2 border-neutral-300 active:bg-red-300">L</span>
-              <span className="border p-1 m-1 px-2 border-neutral-300 active:bg-red-300">Xl</span>
-              <span className="border p-1 m-1 px-2 border-neutral-300 active:bg-red-300">XXl</span>
-            </div>
+          <div className="size mb-8 text-sm">
+            <span className="m-1 border border-neutral-300 p-1 px-2 active:bg-red-300">
+              S
+            </span>
+            <span className="m-1 border border-neutral-300 p-1 px-2 active:bg-red-300">
+              M
+            </span>
+            <span className="m-1 border border-neutral-300 p-1 px-2 active:bg-red-300">
+              L
+            </span>
+            <span className="m-1 border border-neutral-300 p-1 px-2 active:bg-red-300">
+              Xl
+            </span>
+            <span className="m-1 border border-neutral-300 p-1 px-2 active:bg-red-300">
+              XXl
+            </span>
+          </div>
 
           {/* Buttons */}
           <div className="flex gap-4">
             {isAdded2Cart ? (
               <Link to="/cart">
-                <button className="border-neutral-300 flex cursor-pointer items-center justify-center gap-2 rounded border p-1 px-2 font-semibold text-neutral-600 transition">
+                <button className="flex cursor-pointer items-center justify-center gap-2 rounded border border-neutral-300 p-1 px-2 font-semibold text-neutral-600 transition">
                   <CartSVG />
                   Go to Cart
                 </button>
               </Link>
             ) : (
               <button
-                className="border-neutral-300 flex cursor-pointer items-center justify-center gap-2 rounded border p-1 px-2 font-semibold text-neutral-600 transition"
+                className="flex cursor-pointer items-center justify-center gap-2 rounded border border-neutral-300 p-1 px-2 font-semibold text-neutral-600 transition"
                 onClick={() => handleAdd2Cart(product)}
               >
                 <CartSVG />
@@ -178,17 +173,15 @@ const ProductDetailComp = ({prop}) => {
                     src={product.images[0]}
                     alt={product.title}
                     onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "/images/noimage2.jpeg";
+                      e.currentTarget.src = "/images/noimage2.jpeg";
                     }}
                   />
-                  {product.tag === "New" && (
-                    <div className="tag absolute right-2 bottom-2 rounded bg-red-500 px-3 py-1 text-xs font-semibold text-white">
-                      {product.tag}
-                    </div>
-                  )}
-                  {product.tag === "Hot" && (
-                    <div className="tag absolute right-2 bottom-2 rounded bg-amber-500 px-3 py-1 text-xs font-semibold text-white">
+                  {product.tag && (
+                    <div
+                      className={`tag absolute right-2 bottom-2 rounded px-3 py-1 text-xs font-semibold text-white ${
+                        product.tag === "New" ? "bg-red-500" : "bg-amber-500"
+                      }`}
+                    >
                       {product.tag}
                     </div>
                   )}
@@ -196,7 +189,7 @@ const ProductDetailComp = ({prop}) => {
                 <div className="flex h-full flex-col justify-between p-2">
                   <h4 className="truncate font-semibold">{product.title}</h4>
                   <div className="rating flex text-amber-600">
-                    {handleRatings(product.ratings)}
+                    <HandleRatings stars={product.ratings} />
                   </div>
                   <p className="font-semibold text-neutral-600">
                     Rs. {product.price}
