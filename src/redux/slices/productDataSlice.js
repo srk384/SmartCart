@@ -7,10 +7,6 @@ const initialState = {
   modal: false,
 };
 
-// const updateLS = () => {
-//   localStorage.setItem("cart", JSON.stringify(state.cartItems));
-// };
-
 const productData = createSlice({
   name: "productData",
   initialState,
@@ -35,7 +31,6 @@ const productData = createSlice({
         (total, item) => total + item.quantity,
         0,
       );
-      // updateLS();
     },
 
     updateCart: (state, action) => {
@@ -53,7 +48,6 @@ const productData = createSlice({
         (total, item) => total + item.quantity,
         0,
       );
-      // updateLS();
     },
 
     setModal: (state, action) => {

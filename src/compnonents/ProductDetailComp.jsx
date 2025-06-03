@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { IoMdStar, IoMdStarHalf, IoMdStarOutline } from "react-icons/io";
-import { Link, useLocation } from "react-router-dom";
+import { IoMdStar, IoMdStarHalf } from "react-icons/io";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { productArray } from "../data/ProductArray";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/slices/productDataSlice";
@@ -8,12 +8,20 @@ import toast, { Toaster } from "react-hot-toast";
 import CartSVG from "./SVGs/CartSVG";
 import BuySVG from "./SVGs/BuySVG";
 
-const ProductDetailComp = () => {
+const ProductDetailComp = ({prop}) => {
+  const { id } = useParams();
   const location = useLocation();
-  const product = location.state;
+  const product = fetchProductById(id) || location.state 
   const dispatch = useDispatch();
   const imgRef = useRef();
   const [isAdded2Cart, setIsAdded2Cart] = useState(false);
+
+
+
+  function fetchProductById(id){
+    let product =  productArray.find((item)=>item._id === id)
+    return product;
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -113,18 +121,28 @@ const ProductDetailComp = () => {
             ₹{product.price}
           </p>
 
+            {/* --size selector-- */}
+
+            <div className="size text-sm mb-8">
+              <span className="border p-1 m-1 px-2 border-neutral-300 active:bg-red-300">S</span>
+              <span className="border p-1 m-1 px-2 border-neutral-300 active:bg-red-300">M</span>
+              <span className="border p-1 m-1 px-2 border-neutral-300 active:bg-red-300">L</span>
+              <span className="border p-1 m-1 px-2 border-neutral-300 active:bg-red-300">Xl</span>
+              <span className="border p-1 m-1 px-2 border-neutral-300 active:bg-red-300">XXl</span>
+            </div>
+
           {/* Buttons */}
           <div className="flex gap-4">
             {isAdded2Cart ? (
               <Link to="/cart">
-                <button className="border-neutral-3 00 flex cursor-pointer items-center justify-center gap-2 rounded border p-1 px-2 font-semibold text-neutral-600 transition">
+                <button className="border-neutral-300 flex cursor-pointer items-center justify-center gap-2 rounded border p-1 px-2 font-semibold text-neutral-600 transition">
                   <CartSVG />
                   Go to Cart
                 </button>
               </Link>
             ) : (
               <button
-                className="border-neutral-3 00 flex cursor-pointer items-center justify-center gap-2 rounded border p-1 px-2 font-semibold text-neutral-600 transition"
+                className="border-neutral-300 flex cursor-pointer items-center justify-center gap-2 rounded border p-1 px-2 font-semibold text-neutral-600 transition"
                 onClick={() => handleAdd2Cart(product)}
               >
                 <CartSVG />

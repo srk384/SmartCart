@@ -99,7 +99,7 @@ const ProductCard = () => {
       {productList?.length > 0 && (
         <div className="grid gap-4 p-2 md:grid-cols-2 md:p-10 lg:grid-cols-3">
           {productList.map((product) => (
-            <Link to="/product" state={product} key={product.id}>
+            <Link to={`/product/${product._id}`} state={product} key={product._id}>
               <div className="card group mx-auto mb-5 flex w-[300px] flex-col justify-between rounded transition hover:cursor-pointer hover:bg-white hover:shadow-xl md:w-full">
                 <div className="relative h-[304px]">
                   <img
