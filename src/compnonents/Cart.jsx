@@ -70,7 +70,7 @@ const Cart = () => {
                     }}
                   />
                   <div className="">
-                    <Link to="/product" state={product}>
+                    <Link to={`/product/${product._id}`} state={product}>
                       <h4 className="font-semibold underline-offset-2 hover:underline">
                         {product.title}
                       </h4>

@@ -8,9 +8,11 @@ import CartSVG from "./SVGs/CartSVG";
 import BuySVG from "./SVGs/BuySVG";
 import { HandleRatings } from "./HandleRatings";
 
-const ProductDetailComp = () => {
+const ProductDetailComp = ({prop}) => {
+
+  const id = prop.id
   const { cartItems, productList } = useSelector((state) => state.productData);
-  const { id } = useParams();
+  // const { id } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
   const imgRef = useRef();
