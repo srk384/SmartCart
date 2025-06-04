@@ -1,16 +1,10 @@
-import { useGetProductListQuery } from "../redux/APIs/productDataApi";
-import { ShimmerPostList } from "react-shimmer-effects";
+// import { useGetProductListQuery } from "../redux/APIs/productDataApi";
+// import { ShimmerPostList } from "react-shimmer-effects";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  addToCart,
-  setProductList,
-  updateCart,
-} from "../redux/slices/productDataSlice";
+import { setProductList } from "../redux/slices/productDataSlice";
 import { productArray } from "../data/ProductArray";
-import toast, { Toaster } from "react-hot-toast";
-import { IoMdStar, IoMdStarHalf } from "react-icons/io";
-import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { useEffect, useRef } from "react";
 import ProductLink from "./ProductLink";
 
 const ProductCard = () => {
@@ -48,7 +42,6 @@ const ProductCard = () => {
 
   // }, [cartItems]);
 
-  
   return (
     <div className="mx-auto min-h-[calc(100vh-328px-80px)] pt-5 md:max-w-3xl lg:max-w-5xl">
       <Toaster position="top-right" reverseOrder={false} />
@@ -60,7 +53,7 @@ const ProductCard = () => {
       {productList?.length > 0 && (
         <div className="grid gap-4 p-2 md:grid-cols-2 md:p-10 lg:grid-cols-3">
           {productList.map((product) => (
-            <ProductLink prop={{product}} key={product.id}/>
+            <ProductLink prop={{ product }} key={product.id} />
           ))}
         </div>
       )}

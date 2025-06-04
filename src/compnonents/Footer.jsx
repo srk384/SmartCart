@@ -1,47 +1,84 @@
-import React from 'react'
+import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-10 md:h-82">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
+    <footer className="bg-gray-900 py-10 text-gray-300 md:h-82">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* -- About Section -- */}
           <div>
-            <h2 className="text-white text-lg font-semibold mb-4">About Us</h2>
+            <h2 className="mb-4 text-lg font-semibold text-white">About Us</h2>
             <p className="text-sm">
-              Your trusted online shop for quality products at great prices. Fast shipping, easy returns, and great support.
+              Your trusted online shop for quality products at great prices.
+              Fast shipping, easy returns, and great support.
             </p>
           </div>
 
           {/* -- Quick Links -- */}
           <div>
-            <h2 className="text-white text-lg font-semibold mb-4">Quick Links</h2>
+            <h2 className="mb-4 text-lg font-semibold text-white">
+              Quick Links
+            </h2>
             <ul className="space-y-2 text-sm">
-              <li><a href="/privacy-policy" className="hover:text-white transition">Privacy Policy</a></li>
-              <li><a href="/terms-and-conditions" className="hover:text-white transition">Terms & Conditions</a></li>
-              <li><a href="/returns-refunds" className="hover:text-white transition">Returns & Refunds</a></li>
-              <li><a href="/faq" className="hover:text-white transition">FAQs</a></li>
-              <li><a href="/contact" className="hover:text-white transition">Contact Us</a></li>
+              <li>
+                <a
+                  href="/privacy-policy"
+                  className="transition hover:text-white"
+                >
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/terms-and-conditions"
+                  className="transition hover:text-white"
+                >
+                  Terms & Conditions
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/returns-refunds"
+                  className="transition hover:text-white"
+                >
+                  Returns & Refunds
+                </a>
+              </li>
+              <li>
+                <a href="/faq" className="transition hover:text-white">
+                  FAQs
+                </a>
+              </li>
+              <li>
+                <a href="/contact" className="transition hover:text-white">
+                  Contact Us
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* -- Social Media -- */}
           <div>
-            <h2 className="text-white text-lg font-semibold mb-4">Follow Us</h2>
+            <h2 className="mb-4 text-lg font-semibold text-white">Follow Us</h2>
             <div className="flex space-x-4 text-xl">
-              <a href="#" className="hover:text-white transition" aria-label="Facebook">
-                <i className="fab fa-facebook-f"></i>
+              <a
+                href="https://www.linkedin.com/in/khanshahrukh384/"
+                target="blank"
+                className="transition hover:text-white"
+                aria-label="LinkedIn"
+              >
+                <i className="fab fa-linkedin"></i>
               </a>
-              <a href="#" className="hover:text-white transition" aria-label="Instagram">
-                <i className="fab fa-instagram"></i>
-              </a>
-              <a href="#" className="hover:text-white transition" aria-label="Twitter">
-                <i className="fab fa-twitter"></i>
+              <a
+                href="https://github.com/srk384/"
+                target="blank"
+                className="transition hover:text-white"
+                aria-label="Github"
+              >
+                <i className="fab fa-github"></i>
               </a>
             </div>
           </div>
-
         </div>
 
         {/* -- Footer Bottom -- */}
@@ -50,8 +87,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+  );
+};
 
-  )
-}
-
-export default Footer
+export default Footer;

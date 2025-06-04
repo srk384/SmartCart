@@ -4,12 +4,22 @@ import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../redux/slices/productDataSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { HandleRatings } from "./HandleRatings";
-
+import { useEffect, useRef } from "react";
+import useSyncCartToLocalStorage from "./useSyncCartToLocalStorage";
 
 const ProductLink = ({ prop }) => {
   const product = prop.product;
-
   const dispatch = useDispatch();
+
+  const { cartItems } = useSelector((state) => state.productData);
+
+  //   useEffect(() => {
+  //   if (cartItems && cartItems.length > 0) {
+  //     localStorage.setItem("cart", JSON.stringify(cartItems));
+  //   }
+  // }, [cartItems]);
+
+  useSyncCartToLocalStorage(cartItems);
 
   const handleAdd2Cart = (product) => {
     dispatch(addToCart(product));
@@ -28,10 +38,9 @@ const ProductLink = ({ prop }) => {
     });
   };
 
-  
   return (
     <Link to={`/product/${product._id}`} state={product}>
-      <div className="card group mx-auto mb-5 flex w-[300px] flex-col justify-between rounded transition hover:cursor-pointer hover:bg-white hover:shadow-xl md:w-full">
+      <div className="card group mx-auto mb-5 flex w-[300px] flex-col justify-between rounded transition hover:cursor-pointer hover:bg-white hover:shadow-xl active:bg-white active:shadow-xl md:w-full">
         <div className="relative h-[304px]">
           <img
             className="mx-auto h-full rounded-t object-contain"
@@ -54,13 +63,13 @@ const ProductLink = ({ prop }) => {
         <div className="flex h-full flex-col justify-between p-4">
           <h4 className="font-semibold">{product.title}</h4>
           <div className="rating flex text-amber-600">
-            <HandleRatings stars={product.ratings}/>
+            <HandleRatings stars={product.ratings} />
           </div>
           <p className="mb-2 font-semibold text-neutral-600">
             Rs. {product.price}
           </p>
           <button
-            className="mx-auto flex cursor-pointer items-center justify-center gap-2 rounded border-2 border-[#fe5156] p-1 px-2 font-semibold text-[#fe5156] transition hover:bg-[#fe5156] hover:text-white"
+            className="mx-auto flex cursor-pointer items-center justify-center gap-2 rounded border-2 border-[#fe5156] p-1 px-2 font-semibold text-[#fe5156] transition hover:bg-[#fe5156] hover:text-white active:bg-[#fe5156] active:text-white"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();

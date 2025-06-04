@@ -7,12 +7,14 @@ import toast, { Toaster } from "react-hot-toast";
 import CartSVG from "./SVGs/CartSVG";
 import BuySVG from "./SVGs/BuySVG";
 import { HandleRatings } from "./HandleRatings";
+import GetSimilarProducts from "./GetSimilarProducts";
+import { FaSpinner } from "react-icons/fa";
 
-const ProductDetailComp = ({prop}) => {
 
-  const id = prop.id
+const ProductDetailComp = ({ prop }) => {
+  // const id = prop.id
   const { cartItems, productList } = useSelector((state) => state.productData);
-  // const { id } = useParams();
+  const { id } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
   const imgRef = useRef();
@@ -34,16 +36,13 @@ const ProductDetailComp = ({prop}) => {
     window.scrollTo(0, 0);
   }, [product]);
 
-    const getSimilarProducts = (category = product.category.name) => {
-    const similarProducts = productList.filter(
-      (item) => item.category.name === category,
-    );
-    return similarProducts;
-  };
+  useEffect(() => {
+    const hasAdded = cartItems.find((item) => item._id === product._id);
+    hasAdded ? setIsAdded2Cart(true) : setIsAdded2Cart(false);
+  }, [cartItems, product]);
 
   const handleAdd2Cart = (product) => {
     dispatch(addToCart(product));
-    setIsAdded2Cart(true);
 
     toast.success("Added to Cart!", {
       style: {
@@ -58,6 +57,17 @@ const ProductDetailComp = ({prop}) => {
       },
     });
   };
+
+  if (!productList || productList.length === 0) {
+  return (
+    <div className="flex min-h-[calc(100vh-328px-80px)] items-center justify-center text-xl text-neutral-500">
+      <div className="flex flex-col gap-2 items-center">
+        <FaSpinner className="mb-4 animate-spin text-5xl text-[#fe5156]" />
+      <div>Loading product...</div>
+      </div>
+    </div>
+  );
+}
 
   if (!product) {
     return (
@@ -110,7 +120,7 @@ const ProductDetailComp = ({prop}) => {
 
           {/* --size selector-- */}
 
-          <div className="size mb-8 text-sm">
+          {/* <div className="size mb-8 text-sm">
             <span className="m-1 border border-neutral-300 p-1 px-2 active:bg-red-300">
               S
             </span>
@@ -126,7 +136,7 @@ const ProductDetailComp = ({prop}) => {
             <span className="m-1 border border-neutral-300 p-1 px-2 active:bg-red-300">
               XXl
             </span>
-          </div>
+          </div> */}
 
           {/* Buttons */}
           <div className="flex gap-4">
@@ -166,51 +176,7 @@ const ProductDetailComp = ({prop}) => {
       <div className="my-16 w-full md:w-5xl">
         <h2 className="text-2xl font-semibold">Explore Similar Products</h2>
         <div className="flex flex-nowrap gap-2 overflow-x-auto py-8 md:gap-4">
-          {getSimilarProducts().map((product) => (
-            <Link to={`/product/${product._id}`} state={product} key={product.id}>
-              <div className="card flex w-42 flex-col justify-between rounded transition hover:cursor-pointer hover:bg-white hover:shadow-xl">
-                <div className="relative h-42">
-                  <img
-                    className="mx-auto h-full w-full rounded-t object-contain"
-                    src={product.images[0]}
-                    alt={product.title}
-                    onError={(e) => {
-                      e.currentTarget.src = "/images/noimage2.jpeg";
-                    }}
-                  />
-                  {product.tag && (
-                    <div
-                      className={`tag absolute right-2 bottom-2 rounded px-3 py-1 text-xs font-semibold text-white ${
-                        product.tag === "New" ? "bg-red-500" : "bg-amber-500"
-                      }`}
-                    >
-                      {product.tag}
-                    </div>
-                  )}
-                </div>
-                <div className="flex h-full flex-col justify-between p-2">
-                  <h4 className="truncate font-semibold">{product.title}</h4>
-                  <div className="rating flex text-amber-600">
-                    <HandleRatings stars={product.ratings} />
-                  </div>
-                  <p className="font-semibold text-neutral-600">
-                    Rs. {product.price}
-                  </p>
-                  <button
-                    className="mx-auto mt-3 mb-1.5 flex cursor-pointer items-center justify-center gap-1 rounded border-1 border-[#fe5156] p-1 px-2 font-semibold text-[#fe5156] transition hover:bg-[#fe5156] hover:text-white"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleAdd2Cart(product);
-                    }}
-                  >
-                    <CartSVG />
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            </Link>
-          ))}
+          <GetSimilarProducts category={product.category.name} />
         </div>
       </div>
     </div>

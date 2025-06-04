@@ -4,6 +4,8 @@ import { setModal, updateCart } from "../redux/slices/productDataSlice";
 import { Link } from "react-router";
 import BuySVG from "./SVGs/BuySVG";
 import EmptyBagsSVG from "./SVGs/EmptyBagsSVG";
+import useSyncCartToLocalStorage from "./useSyncCartToLocalStorage";
+
 
 const Cart = () => {
   const { cartItems } = useSelector((state) => state.productData);
@@ -18,6 +20,8 @@ const Cart = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [cartItems]);
+
+  useSyncCartToLocalStorage(cartItems);
 
   return (
     <div className="flex min-h-[calc(100vh-328px-80px)] max-w-7xl justify-center pt-5 md:mx-auto">

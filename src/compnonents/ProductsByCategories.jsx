@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ProductLink from "./ProductLink";
 import { productArray } from "../data/ProductArray";
 import { useParams } from "react-router";
+import { FaSpinner } from "react-icons/fa";
 
 export const ProductsByCategories = () => {
   const { cartItems, productList } = useSelector((state) => state.productData);
@@ -29,6 +30,25 @@ export const ProductsByCategories = () => {
       dispatch(setProductList(productArray));
     }
   }, [category, productList]);
+
+  if (!productList || productList.length === 0) {
+    return (
+      <div className="flex min-h-[calc(100vh-328px-80px)] items-center justify-center text-xl text-neutral-500">
+        <div className="flex flex-col items-center gap-2">
+          <FaSpinner className="mb-4 animate-spin text-5xl text-[#fe5156]" />
+          <div>Loading products...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!listByCategory || listByCategory.length === 0) {
+    return (
+      <div className="flex min-h-[calc(100vh-328px-80px)] items-center justify-center text-4xl font-bold text-neutral-600">
+        Category not found.
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto min-h-[calc(100vh-328px-80px)] pt-5 md:max-w-3xl lg:max-w-5xl">

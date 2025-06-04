@@ -1,15 +1,24 @@
-import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { productArray } from "../data/ProductArray";
 import { useRef, useState, useEffect } from "react";
 import CartSVG from "./SVGs/CartSVG";
 
 const Navbar = () => {
-  const { cartCount } = useSelector((state) => state.productData);
+  const { cartCount, cartItems } = useSelector((state) => state.productData);
   const [searchReult, setSearchReult] = useState([]);
   const searchInputRef = useRef();
   const [isHamOpen, setIsHamOpen] = useState(false);
   const [isSearchClicked, setIsSearchClicked] = useState(false);
+  const [categoryName, setCategoryName] = useState("");
+  const category = useParams().category;
+
+  useEffect(() => {
+    setCategoryName(category);
+  }, [category]);
+
+   const totalQTY = cartItems.reduce((total, item) => total + item.quantity, 0);
+
 
   const handleSearch = (e) => {
     const { value } = e.target;
@@ -31,12 +40,12 @@ const Navbar = () => {
   }, [isHamOpen]);
 
   return (
-    <div className="sticky top-0 z-100 flex h-16 items-center justify-between bg-white px-4 shadow-md md:h-20 md:justify-around md:px-2">
+    <div className="sticky top-0 z-100 flex h-16 md:h-18 items-center justify-between bg-white px-4 shadow-md lg:h-20 lg:justify-center lg:gap-5 xl:gap-32 md:px-2">
       <div className="flex items-center gap-4">
         {/* --ham menu-- */}
-        <div className="hamMenu" onClick={() => setIsHamOpen(!isHamOpen)}>
+        <div className="hamMenu lg:hidden" onClick={() => setIsHamOpen(!isHamOpen)}>
           <svg
-            className="block md:hidden"
+            className="block lg:hidden"
             width="32"
             height="32"
             viewBox="0 0 32 32"
@@ -101,15 +110,13 @@ const Navbar = () => {
 
         {/* --logo-- */}
         <Link to="/">
-          <div
-            className="brand flex items-center"
-          >
+          <div className="brand flex items-center">
             <img
               className="h-12 md:h-14"
               src="/images/logo-copy.png"
               alt="logo"
             />
-            <h1 className="hidden items-center gap-1 text-2xl font-bold text-gray-800 md:flex">
+            <h1 className="hidden items-center gap-1 text-2xl font-bold text-gray-800 xl:flex">
               Smart
               <span className="bg-gradient-to-r from-[#fe5156] via-amber-400 to-[#fe5156] bg-clip-text text-transparent">
                 Cart
@@ -120,30 +127,40 @@ const Navbar = () => {
       </div>
 
       {/* --categories-- */}
-      <ul className="hidden gap-5 md:flex">
+      <ul className="hidden gap-5 lg:flex">
         <Link to="/category/Clothes">
-          <li className="box-border flex h-20 cursor-pointer items-center justify-center border-b-4 border-transparent font-semibold hover:border-red-600 active:border-fuchsia-700">
+          <li
+            className={`box-border flex h-20 cursor-pointer items-center justify-center border-b-4 font-semibold hover:border-red-600 transition ${categoryName === "Clothes" ? "border-red-600" : "border-transparent"}`}
+          >
             Clothes
           </li>
         </Link>
         <Link to="/category/Shoes">
-          <li className="box-border flex h-20 cursor-pointer items-center justify-center border-b-4 border-transparent font-semibold hover:border-pink-500 focus:border-fuchsia-700">
+          <li
+            className={`box-border flex h-20 cursor-pointer items-center justify-center border-b-4 font-semibold hover:border-pink-500 transition ${categoryName === "Shoes" ? "border-pink-500" : "border-transparent"}`}
+          >
             Shoes
           </li>
         </Link>
         <Link to="/category/Electronics">
-          <li className="box-border flex h-20 cursor-pointer items-center justify-center border-b-4 border-transparent font-semibold hover:border-fuchsia-700 focus:border-fuchsia-700">
+          <li
+            className={`box-border flex h-20 cursor-pointer items-center justify-center border-b-4 font-semibold hover:border-fuchsia-700 transition ${categoryName === "Electronics" ? "border-fuchsia-700" : "border-transparent"}`}
+          >
             Electronics
           </li>
         </Link>
         <Link to="/category/Furniture">
-          <li className="box-border flex h-20 cursor-pointer items-center justify-center border-b-4 border-transparent font-semibold hover:border-green-500 focus:border-fuchsia-700">
+          <li
+            className={`box-border flex h-20 cursor-pointer items-center justify-center border-b-4 font-semibold hover:border-green-500 transition ${categoryName === "Furniture" ? "border-green-500" : "border-transparent"}`}
+          >
             Furniture
           </li>
         </Link>
         <Link to="/category/Miscellaneous">
-          <li className="hover:border-yellow- box-border flex h-20 cursor-pointer items-center justify-center border-b-4 border-transparent font-semibold hover:border-yellow-300 focus:border-fuchsia-700">
-            Others
+          <li
+            className={`box-border flex h-20 cursor-pointer items-center justify-center border-b-4 font-semibold hover:border-yellow-300 transition ${categoryName === "Miscellaneous" ? "border-yellow-300" : "border-transparent"}`}
+          >
+            Miscellaneous
           </li>
         </Link>
       </ul>
@@ -173,7 +190,7 @@ const Navbar = () => {
         {searchReult && (
           <div className="searchResult absolute hidden max-h-64 w-100 overflow-y-auto bg-white shadow-sm md:block">
             {searchReult.map((item) => (
-              <Link to="/product" state={item} key={item.id}>
+              <Link to={`/product/${item._id}`} state={item} key={item.id}>
                 <div
                   className="w-full cursor-pointer p-2 px-4 text-neutral-600 hover:bg-neutral-100 active:bg-gray-800 active:text-white"
                   onClick={() => {
@@ -254,7 +271,11 @@ const Navbar = () => {
                 {searchReult && (
                   <div className="searchResult absolute top-16.5 left-0 block max-h-64 w-full overflow-y-auto border-neutral-300 bg-white shadow-sm md:hidden">
                     {searchReult.map((item) => (
-                      <Link to="/product" state={item} key={item.id}>
+                      <Link
+                        to={`/product/${item._id}`}
+                        state={item}
+                        key={item.id}
+                      >
                         <div
                           className="w-full cursor-pointer p-2 px-4 text-neutral-600 hover:bg-neutral-100 active:bg-gray-800 active:text-white"
                           onClick={() => {
@@ -283,7 +304,7 @@ const Navbar = () => {
             <div className="relative">
               <CartSVG />
               <div className="absolute -top-1 -right-1 size-4 rounded-full bg-[#fe5156] text-center text-xs font-bold text-white md:size-4.5">
-                {cartCount}
+                {totalQTY}
               </div>
             </div>
             <div className="cart hidden text-xs font-semibold md:block md:text-sm">
