@@ -66,7 +66,7 @@ const ProductLink = ({ prop }) => {
             <HandleRatings stars={product.ratings} />
           </div>
           <p className="mb-2 font-semibold text-neutral-600">
-            Rs. {product.price}
+            Rs. {(product.price).toLocaleString()}
           </p>
           <button
             className="mx-auto flex cursor-pointer items-center justify-center gap-2 rounded border-2 border-[#fe5156] p-1 px-2 font-semibold text-[#fe5156] transition hover:bg-[#fe5156] hover:text-white active:bg-[#fe5156] active:text-white"

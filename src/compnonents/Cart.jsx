@@ -108,7 +108,7 @@ const Cart = () => {
                       </select>
                     </p>
                     <p className="pt-3 font-semibold text-neutral-800">
-                      &#8377; {product.price}
+                      &#8377; {(product.price).toLocaleString()}
                     </p>
                     <p className="text-sm font-semibold">Exchnage Only</p>
                     <div className="close">
@@ -161,7 +161,7 @@ const Cart = () => {
               <div className="border-b border-neutral-300"></div>
               <p className="flex justify-between pt-3 text-lg font-semibold text-neutral-800">
                 <span>Total Amount:</span>{" "}
-                <span>&#8377; {totalMRP - totalMRP / 10}</span>{" "}
+                <span>&#8377; {(totalMRP - totalMRP / 10).toLocaleString()}</span>{" "}
               </p>
             </div>
             <Link to="/confirmation">

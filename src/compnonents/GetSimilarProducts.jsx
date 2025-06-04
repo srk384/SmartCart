@@ -67,7 +67,7 @@ const GetSimilarProducts = ({ category }) => {
                 <HandleRatings stars={product.ratings} />
               </div>
               <p className="font-semibold text-neutral-600">
-                Rs. {product.price}
+                Rs. {(product.price).toLocaleString()}
               </p>
               <button
                 className="mx-auto mt-3 mb-1.5 flex cursor-pointer items-center justify-center gap-1 rounded border-1 border-[#fe5156] p-1 px-2 font-semibold text-[#fe5156] transition hover:bg-[#fe5156] hover:text-white active:bg-[#fe5156] active:text-white"

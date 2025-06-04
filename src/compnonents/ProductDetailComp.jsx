@@ -115,7 +115,7 @@ const ProductDetailComp = ({ prop }) => {
           </div>
           <p className="mb-4 text-lg text-gray-700">{product.description}</p>
           <p className="mb-4 text-2xl font-semibold text-green-600">
-            ₹{product.price}
+            ₹{(product.price).toLocaleString()}
           </p>
 
           {/* --size selector-- */}
