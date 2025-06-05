@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setProductList } from "../redux/slices/productDataSlice";
 import { productArray } from "../data/ProductArray";
 import { Toaster } from "react-hot-toast";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import ProductLink from "./ProductLink";
 
 const ProductCard = () => {
@@ -18,7 +18,6 @@ const ProductCard = () => {
 
   const { cartItems, productList } = useSelector((state) => state.productData);
   const dispatch = useDispatch();
-  const isFirstRender = useRef(true);
 
   useEffect(() => {
     dispatch(setProductList(productArray));
@@ -27,20 +26,6 @@ const ProductCard = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [productList]);
-
-  // useEffect(() => {
-  //   if (isFirstRender.current) {
-  //     const getLS = JSON.parse(localStorage.getItem("cart"))
-  //     if(getLS){
-  //       dispatch(addToCart(...getLS));
-  //       isFirstRender.current = false;
-  //       return;
-  //     }
-
-  //   }
-  //   localStorage.setItem("cart", JSON.stringify(cartItems));
-
-  // }, [cartItems]);
 
   return (
     <div className="mx-auto min-h-[calc(100vh-328px-80px)] pt-5 md:max-w-3xl lg:max-w-5xl">

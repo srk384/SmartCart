@@ -8,8 +8,6 @@ import CartSVG from "./SVGs/CartSVG";
 import BuySVG from "./SVGs/BuySVG";
 import { HandleRatings } from "./HandleRatings";
 import GetSimilarProducts from "./GetSimilarProducts";
-import { FaSpinner } from "react-icons/fa";
-
 
 const ProductDetailComp = ({ prop }) => {
   // const id = prop.id
@@ -31,14 +29,17 @@ const ProductDetailComp = ({ prop }) => {
   }, [id, productList]);
 
   const product = productById || location.state;
+  console.log(product);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [product]);
 
   useEffect(() => {
-    const hasAdded = cartItems.find((item) => item._id === product._id);
-    hasAdded ? setIsAdded2Cart(true) : setIsAdded2Cart(false);
+    if (product) {
+      const hasAdded = cartItems.find((item) => item._id === product._id);
+      hasAdded ? setIsAdded2Cart(true) : setIsAdded2Cart(false);
+    }
   }, [cartItems, product]);
 
   const handleAdd2Cart = (product) => {
@@ -57,17 +58,6 @@ const ProductDetailComp = ({ prop }) => {
       },
     });
   };
-
-  if (!productList || productList.length === 0) {
-  return (
-    <div className="flex min-h-[calc(100vh-328px-80px)] items-center justify-center text-xl text-neutral-500">
-      <div className="flex flex-col gap-2 items-center">
-        <FaSpinner className="mb-4 animate-spin text-5xl text-[#fe5156]" />
-      <div>Loading product...</div>
-      </div>
-    </div>
-  );
-}
 
   if (!product) {
     return (
@@ -115,7 +105,7 @@ const ProductDetailComp = ({ prop }) => {
           </div>
           <p className="mb-4 text-lg text-gray-700">{product.description}</p>
           <p className="mb-4 text-2xl font-semibold text-green-600">
-            ₹{(product.price).toLocaleString()}
+            ₹{product.price.toLocaleString()}
           </p>
 
           {/* --size selector-- */}

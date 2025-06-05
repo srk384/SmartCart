@@ -47,3 +47,4 @@ Smart Cart is a fully responsive eCommerce website built with React and Redux. I
 ```bash
 git clone https://github.com/srk384/Smart-Cart-Redux.git
 cd Smart-Cart-Redux
+    

@@ -7,7 +7,7 @@ import { productArray } from "../data/ProductArray";
 import { useParams } from "react-router";
 import { FaSpinner } from "react-icons/fa";
 
-export const ProductsByCategories = () => {
+const ProductsByCategories = () => {
   const { cartItems, productList } = useSelector((state) => state.productData);
   const [pageTitle, setPageTitle] = useState("");
   const [listByCategory, setListByCategory] = useState([]);
@@ -30,17 +30,6 @@ export const ProductsByCategories = () => {
       dispatch(setProductList(productArray));
     }
   }, [category, productList]);
-
-  if (!productList || productList.length === 0) {
-    return (
-      <div className="flex min-h-[calc(100vh-328px-80px)] items-center justify-center text-xl text-neutral-500">
-        <div className="flex flex-col items-center gap-2">
-          <FaSpinner className="mb-4 animate-spin text-5xl text-[#fe5156]" />
-          <div>Loading products...</div>
-        </div>
-      </div>
-    );
-  }
 
   if (!listByCategory || listByCategory.length === 0) {
     return (
@@ -72,3 +61,5 @@ export const ProductsByCategories = () => {
     </div>
   );
 };
+
+export default ProductsByCategories;
